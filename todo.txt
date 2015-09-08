@@ -1,0 +1,5 @@
+- Needs more feedback when there's a malfunction.
+- Add param in config to choose whether to open a new tab or a new window.
+- Add (i)nfo command to retrieve relevant information about a stream.
+- Add way to change the config values in runtime.
+- Refactor the commands.

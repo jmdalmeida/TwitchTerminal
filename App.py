@@ -17,6 +17,7 @@ class App:
         self.printer = Printer()
 
     def run(self):
+        self.printer.print_simple("Loading...")
         self.set_streams_list()
         # Main loop
         while True:
@@ -80,9 +81,4 @@ class App:
         return p
 
     def set_streams_list(self):
-        if self.config.RAUT:
-            self.streams = self.api.get_online_followed_channels_oauth(
-                self.config.AUTH)
-        else:
-            self.streams = self.api.get_online_followed_channels(
-                self.config.CHNL)
+        self.streams = self.api.get_live_followed_channels(self.config.CHNL)

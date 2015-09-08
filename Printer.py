@@ -20,8 +20,8 @@ class Printer:
         for x in xrange(len(streams)):
             s = streams[x]
             print("  {0} - {1} - {2} ({3} viewers)".format(str(x + 1),
-                                                           str(s['channel']['display_name']),
-                                                           str(s['game']),
+                                                           s['channel']['display_name'].encode('utf-8'),
+                                                           s['game'].encode('utf-8'),
                                                            str(s['viewers'])))
 
     def print_help(self):
