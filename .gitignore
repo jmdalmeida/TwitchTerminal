@@ -57,4 +57,4 @@ docs/_build/
 target/
 
 *.pyc
-#config.py
+config.py
