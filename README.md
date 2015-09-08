@@ -11,7 +11,7 @@ Console app to easily overview your Twitch.tv followed live broadcasts and watch
   git clone https://github.com/jmdalmeida/TwitchTerminal
   cd ./TwitchTerminal
   ```
-2. Edit config.py and add your account name and oauth token
+2. Edit config.py and add your account name
 3. Run the application
 
   ```
