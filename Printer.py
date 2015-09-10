@@ -1,3 +1,6 @@
+import math
+
+
 class Printer:
 
     def print_simple(self, msg):
@@ -22,7 +25,26 @@ class Printer:
             print("  {0} - {1} - {2} ({3} viewers)".format(str(x + 1),
                                                            s['channel']['display_name'].encode('utf-8'),
                                                            s['game'].encode('utf-8'),
-                                                           str(s['viewers'])))
+                                                           str(self.prettify(s['viewers']))))
+
+    def print_info(self, s):
+        self.print_clear()
+        self.print_header("INFO")
+        print("Name: {0}".format(s['channel']['display_name'].encode('utf-8')))
+        print("Status: {0}".format(s['channel']['status'].encode('utf-8')))
+        print("Game: {0}".format(s['game'].encode('utf-8')))
+        print("Viewers: {0}".format(str(self.prettify(s['viewers']))))
+        print("FPS: {0}".format(str(math.ceil(s['average_fps']))))
+        print("Partner: {0}".format(
+            "Yes" if s['channel']['partner'] else "No"))
+        print("Mature: {0}".format(
+            "Yes" if s['channel']['mature'] else "No"))
+        print("Language: {0}".format(s['channel']['language']))
+        print("Followers: {0}".format(
+            str(self.prettify(s['channel']['followers']))))
+        print("Views: {0}".format(str(self.prettify(s['channel']['views']))))
+        print("Created at: {0}".format(s['channel']['created_at'][:10]))
+        self.ask_input("Press ENTER to continue...")
 
     def print_help(self):
         self.print_clear()
@@ -32,9 +54,13 @@ class Printer:
         print("  pN - open profile page")
         print("  wN - open broadcast")
         print("  cN - open chat")
+        print("  iN - show info")
         print("  (N = number of the stream)")
         print("  q - quit")
-        raw_input("Press ENTER to continue...")
+        self.ask_input("Press ENTER to continue...")
 
     def ask_input(self, msg):
         return raw_input(msg)
+
+    def prettify(self, n):
+        return "{:,}".format(n)

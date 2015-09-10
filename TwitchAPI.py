@@ -36,6 +36,7 @@ class TwitchAPI:
             result.append(c['channel']['name'])
         return result
 
+
 class Urls:
     '''
     Should not be instantiated, just used to categorize

@@ -18,7 +18,7 @@ class App:
 
     def run(self):
         self.printer.print_simple("Loading...")
-        self.set_streams_list()
+        self.fetch_streams_list()
         # Main loop
         while True:
             self.printer.print_menu(self.config.CHNL, self.streams)
@@ -32,30 +32,36 @@ class App:
                 break
             elif c is "r":  # reload list
                 self.printer.print_simple("Reloading list...")
-                self.set_streams_list()
+                self.fetch_streams_list()
             elif c[0] is "p":  # open profile page
-                n = self.get_command_number(c, len(self.streams))
+                n = self.get_command_number(c)
                 if n is not None:
                     stream = self.streams[n]
                     cmd = "python -m webbrowser -t '{0}'".format(
-                            stream['channel']['url'] + "/profile")
+                        stream['channel']['url'] + "/profile")
                     self.open_subprocess(cmd)
-            elif c[0] is "c": # open the chat window
-                n = self.get_command_number(c, len(self.streams))
+            elif c[0] is "c":  # open the chat window
+                n = self.get_command_number(c)
                 if n is not None:
                     stream = self.streams[n]
                     cmd = "python -m webbrowser -t '{0}'".format(
-                            stream['channel']['url'] + "/chat?popout=")
+                        stream['channel']['url'] + "/chat?popout=")
                     self.open_subprocess(cmd)
             elif c[0] is "w":  # open the broadcast
-                n = self.get_command_number(c, len(self.streams))
+                n = self.get_command_number(c)
                 if n is not None:
                     stream = self.streams[n]
                     cmd = "livestreamer {0} {1} -p {2}".format(
-                            stream['channel']['url'], self.config.QLTY, self.config.SFTW)
+                        stream['channel']['url'], self.config.QLTY, self.config.SFTW)
                     self.open_subprocess(cmd)
+            elif c[0] is "i":  # list info
+                n = self.get_command_number(c)
+                if n is not None:
+                    stream = self.streams[n]
+                    self.printer.print_info(stream)
 
-    def get_command_number(self, cmd, slen):
+    def get_command_number(self, cmd):
+        slen = len(self.streams)
         try:
             n = int(cmd[1:]) - 1
             if n >= 0 and n < slen:
@@ -80,5 +86,5 @@ class App:
             os.dup2(savout, 1)
         return p
 
-    def set_streams_list(self):
+    def fetch_streams_list(self):
         self.streams = self.api.get_live_followed_channels(self.config.CHNL)
