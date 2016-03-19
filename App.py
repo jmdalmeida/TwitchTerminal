@@ -1,10 +1,8 @@
-import pdb
-
+from Commands import CommandsManager
 from TwitchAPI import TwitchAPI
 from Printer import Printer
 
 import os
-import webbrowser
 import subprocess
 import shlex
 
@@ -15,6 +13,7 @@ class App:
         self.config = _config
         self.api = TwitchAPI()
         self.printer = Printer()
+        self.cm = CommandsManager(self)
 
     def run(self):
         self.printer.print_simple("Loading...")
@@ -25,40 +24,7 @@ class App:
             c = self.printer.ask_input("Command (h for help): ")
             if len(c) is 0:
                 pass
-            elif c is "h":  # help
-                self.printer.print_help()
-            elif c is "q":  # quit app
-                self.printer.print_simple("Exiting...")
-                break
-            elif c is "r":  # reload list
-                self.printer.print_simple("Reloading list...")
-                self.fetch_streams_list()
-            elif c[0] is "p":  # open profile page
-                n = self.get_command_number(c)
-                if n is not None:
-                    stream = self.streams[n]
-                    cmd = "python -m webbrowser -t '{0}'".format(
-                        stream['channel']['url'] + "/profile")
-                    self.open_subprocess(cmd)
-            elif c[0] is "c":  # open the chat window
-                n = self.get_command_number(c)
-                if n is not None:
-                    stream = self.streams[n]
-                    cmd = "python -m webbrowser -t '{0}'".format(
-                        stream['channel']['url'] + "/chat?popout=")
-                    self.open_subprocess(cmd)
-            elif c[0] is "w":  # open the broadcast
-                n = self.get_command_number(c)
-                if n is not None:
-                    stream = self.streams[n]
-                    cmd = "livestreamer {0} {1} -p {2}".format(
-                        stream['channel']['url'], self.config.QLTY, self.config.SFTW)
-                    self.open_subprocess(cmd)
-            elif c[0] is "i":  # list info
-                n = self.get_command_number(c)
-                if n is not None:
-                    stream = self.streams[n]
-                    self.printer.print_info(stream)
+            self.cm.run_command(c)
 
     def get_command_number(self, cmd):
         slen = len(self.streams)
@@ -88,3 +54,4 @@ class App:
 
     def fetch_streams_list(self):
         self.streams = self.api.get_live_followed_channels(self.config.CHNL)
+
