@@ -2,4 +2,3 @@
 - Param in config to choose whether to open a new tab or a new window.
 - Open a stream by typing the name.
 - Change the config values in runtime.
-- Refactor the commands.
