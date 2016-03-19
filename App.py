@@ -22,8 +22,9 @@ class App:
         while True:
             self.printer.print_menu(self.config.CHNL, self.streams)
             c = self.printer.ask_input("Command (h for help): ")
-            if len(c) is 0:
-                pass
+            c = c.strip()
+            if not c:
+                continue
             self.cm.run_command(c)
 
     def get_command_number(self, cmd):
