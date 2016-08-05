@@ -1,12 +1,8 @@
 import urllib
 import json
 
-import pdb
-
 
 class TwitchAPI:
-
-    BASE = "https://api.twitch.tv/kraken/"
 
     def get_content(self, url):
         response = urllib.urlopen(url)
